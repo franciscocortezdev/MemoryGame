@@ -43,18 +43,17 @@ const compare = (btn, key)=>{
     if(id1 != id2){
         if (valor2 != '' && valor2 != undefined){
             if (valor1 == valor2){
-                
                 dropCards(valor1,valor2)
                 puntos.innerHTML ++;
-                
                 if(puntos.innerHTML == 4){
-                    puntos.innerHTML = 'Ganasteeee!!!!'
+                    setTimeout(() => {
+                    puntos.innerHTML = 'Ganaste!'
                     puntos.classList.add('verde')
                     endGame();
+                    }, 1000);
+                    
                 }
             }else{
-                
-    
                 valor1 = '';
                 valor2 = '';
                 lives.innerHTML --;
@@ -65,12 +64,8 @@ const compare = (btn, key)=>{
                 }
             }
         }
-    }else{
-       
+    }else{  
     }
-    
-    
-//<img class="container__item_img" src="/imgs/1.png" ></img>
 }
 
 const startcards = ()=>{
@@ -84,7 +79,7 @@ const startcards = ()=>{
     lista = cards.sort(function() {return Math.random() - 0.5});
     for (let i =0; i < cards.length; i++){
         const card = document.querySelector(`.c${i}`);
-        card.innerHTML = `<img class="container__item_img i${i}" src="/imgs/${cards[i]}.png" ></img>`;
+        card.innerHTML = `<img class="container__item_img i${i}" src="./imgs/${cards[i]}.png" ></img>`;
         container.children[i].children[0].classList.remove('items_hide_C');
         container.children[i].children[0].classList.remove('items_hide');
     }
@@ -98,32 +93,22 @@ const startcards = ()=>{
 const endGame = ()=>{
     valor1 ='';
     valor2 ='';
-   
     for (let i =0; i < cards.length; i++){
         const card = document.querySelector(`.c${i}`);
         card.innerHTML ='';
-        
     }
 }
 
 
 const dropCards = (v1, v2)=>{
     for(let i=0; i<container.children.length;i++ ){
-
-        
-
         if(container.children[i].children[0].src.includes(v1)){
             container.children[i].children[0].classList.add('items_hide_C')
-            
-          //  container.children[i].innerHTML = ' ';
-           
-        }
-        
+        }   
     }
     valor1 ='';
     valor2 ='';
     statusbtn =false;
-    
 }
 
 
