@@ -1,6 +1,7 @@
 const container = document.querySelector(".container");
 const btnStart = document.querySelector(".btn-start");
 const puntos = document.querySelector(".puntos");
+const gameResult = document.querySelector('.statusGame');
 const lives = document.querySelector(".lives");
 const audioCorrect = new Audio('./src/sounds/correct.wav');
 const audioError = new Audio('./src/sounds/error.wav');
@@ -11,6 +12,7 @@ var id1 = '';
 var id2 = '';
 
 btnStart.addEventListener('click', (e)=>{
+  e.target.innerHTML='Reiniciar Juego';
     startcards();
 });
 
@@ -49,12 +51,15 @@ const compare = (btn, key)=>{
                 dropCards(valor1)
                 puntos.innerHTML ++;
                 if(puntos.innerHTML == 4){
+                  gameResult.innerHTML='Ganaste';
+                  gameResult.classList.add('verde')
                     setTimeout(() => {
                       
-                    puntos.innerHTML = 'Ganaste!'
-                    puntos.classList.add('verde')
+
+                    gameResult.innerHTML = ''
+                    gameResult.classList.remove('verde')
                     endGame();
-                    }, 1000);
+                    }, 3000);
                     
                 }
             }else{
@@ -63,9 +68,15 @@ const compare = (btn, key)=>{
                 valor2 = '';
                 lives.innerHTML --;
                 if(lives.innerHTML == 0){
-                    puntos.innerHTML = 'Perdiste'
-                    puntos.classList.add('rojo')
+                  gameResult.innerHTML='Perdiste';
+                  gameResult.classList.add('rojo')
+                    setTimeout(() => {
+                      
+
+                    gameResult.innerHTML = ''
+                    gameResult.classList.remove('rojo')
                     endGame();
+                    }, 3000);
                 }
             }
         }
@@ -79,8 +90,7 @@ const startcards = ()=>{
     statusbtn =false;
     puntos.innerHTML = 0;
     lives.innerHTML = 3;
-    puntos.classList.remove('rojo')
-    puntos.classList.remove('verde')
+   
     lista = cards.sort(function() {return Math.random() - 0.5});
     for (let i =0; i < cards.length; i++){
         const card = document.querySelector(`.c${i}`);
@@ -96,6 +106,7 @@ const startcards = ()=>{
 }
 
 const endGame = ()=>{
+    btnStart.innerHTML='Empezar Juego';
     valor1 ='';
     valor2 ='';
     for (let i =0; i < cards.length; i++){
@@ -106,7 +117,8 @@ const endGame = ()=>{
 
 
 const dropCards = (v1)=>{
-    for(let i=0; i<container.children.length;i++ ){
+    for(let i=0; i<container.children.length-1;i++ ){
+        
         if(container.children[i].children[0].src.includes(v1)){
             container.children[i].children[0].classList.add('items_hide_C')
         }   
