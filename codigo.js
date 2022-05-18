@@ -2,6 +2,8 @@ const container = document.querySelector(".container");
 const btnStart = document.querySelector(".btn-start");
 const puntos = document.querySelector(".puntos");
 const lives = document.querySelector(".lives");
+const audioCorrect = new Audio('./src/sounds/correct.wav');
+const audioError = new Audio('./src/sounds/error.wav');
 const cards = [1,2,3,4,1,2,3,4];
 var statusbtn = false;
 var valor1, valor2;
@@ -13,7 +15,7 @@ btnStart.addEventListener('click', (e)=>{
 });
 
 container.addEventListener('click', (e)=>{
-    //let btn = e.target.innerHTML;
+   
     let btn = e.target.src;
     let key = e.target.classList[1];
     compare(btn, key);
@@ -43,10 +45,12 @@ const compare = (btn, key)=>{
     if(id1 != id2){
         if (valor2 != '' && valor2 != undefined){
             if (valor1 == valor2){
-                dropCards(valor1,valor2)
+                audioCorrect.play();
+                dropCards(valor1)
                 puntos.innerHTML ++;
                 if(puntos.innerHTML == 4){
                     setTimeout(() => {
+                      
                     puntos.innerHTML = 'Ganaste!'
                     puntos.classList.add('verde')
                     endGame();
@@ -54,6 +58,7 @@ const compare = (btn, key)=>{
                     
                 }
             }else{
+                audioError.play();
                 valor1 = '';
                 valor2 = '';
                 lives.innerHTML --;
@@ -79,7 +84,7 @@ const startcards = ()=>{
     lista = cards.sort(function() {return Math.random() - 0.5});
     for (let i =0; i < cards.length; i++){
         const card = document.querySelector(`.c${i}`);
-        card.innerHTML = `<img class="container__item_img i${i}" src="./imgs/${cards[i]}.png" ></img>`;
+        card.innerHTML = `<img class="container__item_img i${i}" src="./src/imgs/${cards[i]}.png" ></img>`;
         container.children[i].children[0].classList.remove('items_hide_C');
         container.children[i].children[0].classList.remove('items_hide');
     }
@@ -100,7 +105,7 @@ const endGame = ()=>{
 }
 
 
-const dropCards = (v1, v2)=>{
+const dropCards = (v1)=>{
     for(let i=0; i<container.children.length;i++ ){
         if(container.children[i].children[0].src.includes(v1)){
             container.children[i].children[0].classList.add('items_hide_C')
